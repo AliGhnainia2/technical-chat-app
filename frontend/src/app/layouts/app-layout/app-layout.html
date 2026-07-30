@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/dashboard">
+      <span class="brand-mark" aria-hidden="true">T</span>
+      <span>Technical Chat</span>
+    </a>
+
+    <div class="account">
+      @if (user(); as currentUser) {
+        <div class="identity">
+          <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+          <span class="identity-copy">
+            <strong>{{ currentUser.username }}</strong>
+            <small>{{ currentUser.email }}</small>
+          </span>
+        </div>
+      }
+      <button class="logout-button" type="button" (click)="logout()">
+        <span>Se déconnecter</span>
+        <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <router-outlet />
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="picker" role="dialog" aria-label="Sélecteur d’emojis">
+  <p>Emojis</p>
+  <div class="emoji-grid" role="group" aria-label="Emojis courants">
+    @for (emoji of emojis; track emoji.character) {
+      <button
+        type="button"
+        [attr.aria-label]="emoji.label"
+        [title]="emoji.label"
+        (click)="selectEmoji(emoji.character)"
+      >
+        <span aria-hidden="true">{{ emoji.character }}</span>
+      </button>
+    }
+  </div>
+</div>

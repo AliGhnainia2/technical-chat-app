@@ -1,0 +1,27 @@
+.alert {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 28%, transparent);
+  border-radius: var(--radius-md);
+  color: var(--color-danger-strong);
+  background: var(--color-danger-soft);
+  font-size: 0.875rem;
+}
+
+span {
+  display: grid;
+  flex: 0 0 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  background: var(--color-danger);
+  font-weight: 800;
+}
+
+p {
+  margin: 0;
+}

@@ -1,0 +1,115 @@
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dashboard {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  width: min(100% - 2.5rem, 82rem);
+  flex-direction: column;
+  margin-inline: auto;
+  padding-block: 1.4rem 2rem;
+}
+
+.workspace-heading {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.workspace-heading p {
+  margin: 0 0 0.2rem;
+  color: var(--color-primary);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.workspace-heading h1 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 1.5rem;
+  letter-spacing: -0.04em;
+}
+
+.api-state {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.api-state > span:first-child {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.api-state--up > span:first-child {
+  background: var(--color-success);
+  box-shadow: 0 0 0 0.25rem var(--color-success-soft);
+}
+
+.api-state--down > span:first-child {
+  background: var(--color-danger);
+}
+
+.chat-shell {
+  display: grid;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 720px) {
+  .dashboard {
+    width: 100%;
+    padding: 0;
+  }
+
+  .workspace-heading {
+    display: none;
+  }
+
+  .chat-shell {
+    height: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    grid-template-columns: 1fr;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .chat-shell > app-conversation {
+    display: none;
+  }
+
+  .chat-shell--conversation > app-user-list {
+    display: none;
+  }
+
+  .chat-shell--conversation > app-conversation {
+    display: block;
+  }
+}

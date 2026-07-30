@@ -1,0 +1,108 @@
+<section class="conversation" aria-label="Conversation active">
+  @if (chatState.selectedUser(); as selectedUser) {
+    <header>
+      <button
+        class="back-button"
+        type="button"
+        aria-label="Retour aux contacts"
+        (click)="clearSelection()"
+      >
+        ←
+      </button>
+      <span class="avatar" aria-hidden="true">
+        {{ selectedUser.username.slice(0, 2).toUpperCase() }}
+      </span>
+      <div class="identity">
+        <strong>{{ selectedUser.username }}</strong>
+        @if (selectedUser.status === 'ONLINE') {
+          <small class="online">
+            <span aria-hidden="true"></span>
+            En ligne
+          </small>
+        } @else {
+          <small>
+            Vu {{ selectedUser.lastSeenAt | date: 'd MMM y, HH:mm' : '' : 'fr' }}
+          </small>
+        }
+      </div>
+      <span
+        class="socket-state"
+        [class.socket-state--connected]="chatState.connectionStatus() === 'connected'"
+        [title]="
+          chatState.connectionStatus() === 'connected'
+            ? 'Messagerie connectée'
+            : 'Messagerie en cours de connexion'
+        "
+        aria-hidden="true"
+      ></span>
+    </header>
+
+    <div
+      #messageHistory
+      class="history"
+      tabindex="0"
+      aria-label="Historique des messages"
+      aria-live="polite"
+      (scrollend)="handleHistoryScrollEnd()"
+      (wheel)="handleUserScrollIntent()"
+      (touchstart)="handleUserScrollIntent()"
+      (touchmove)="handleUserScrollIntent()"
+      (keydown)="handleUserScrollIntent()"
+    >
+      @if (chatState.conversationLoading()) {
+        <div class="centered-state">
+          <span class="loader" aria-hidden="true"></span>
+          <p>Chargement de la conversation…</p>
+        </div>
+      } @else if (chatState.conversationError(); as error) {
+        <div class="centered-state centered-state--error">
+          <p>{{ error }}</p>
+          <button type="button" (click)="chatState.selectUser(selectedUser.id)">
+            Réessayer
+          </button>
+        </div>
+      } @else if (chatState.messages().length === 0) {
+        <div class="centered-state">
+          <span class="empty-icon" aria-hidden="true">✦</span>
+          <strong>Commencez la conversation</strong>
+          <p>Envoyez un premier message à {{ selectedUser.username }}.</p>
+        </div>
+      } @else {
+        @for (message of chatState.messages(); track message.id; let index = $index) {
+          @if (startsNewDay(index)) {
+            <div class="date-separator">
+              <span>{{ message.sentAt | date: 'd MMMM y' : '' : 'fr' }}</span>
+            </div>
+          }
+          <article
+            class="message-row"
+            [class.message-row--outgoing]="isOutgoing(message)"
+          >
+            <div class="bubble">
+              <p>{{ message.content }}</p>
+              <span class="metadata">
+                {{ message.sentAt | date: 'HH:mm' }}
+                @if (isOutgoing(message)) {
+                  <span
+                    class="delivery"
+                    [attr.aria-label]="'Statut ' + message.status"
+                  >
+                    {{ message.status === 'SENT' ? '✓' : '✓✓' }}
+                  </span>
+                }
+              </span>
+            </div>
+          </article>
+        }
+      }
+    </div>
+
+    <app-message-composer />
+  } @else {
+    <div class="empty-conversation">
+      <span class="empty-mark" aria-hidden="true">T</span>
+      <h2>Vos conversations, simplement.</h2>
+      <p>Sélectionnez un contact pour consulter vos messages et démarrer la discussion.</p>
+    </div>
+  }
+</section>

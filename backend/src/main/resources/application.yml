@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: technical-chat
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/technical_chat}
+      auto-index-creation: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+application:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:}
+      expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+app:
+  cors:
+    allowed-origin: ${FRONTEND_URL:http://localhost:4200}

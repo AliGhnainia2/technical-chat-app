@@ -1,0 +1,84 @@
+<div class="composer">
+  @if (chatState.sendError(); as error) {
+    <p class="feedback feedback--error" role="alert">{{ error }}</p>
+  } @else if (emojiLimitReached()) {
+    <p class="feedback feedback--error" role="status">
+      La limite de 2000 caractères est atteinte.
+    </p>
+  } @else if (chatState.connectionStatus() !== 'connected') {
+    <p class="feedback" role="status">
+      @switch (chatState.connectionStatus()) {
+        @case ('connecting') {
+          Connexion au service de messagerie…
+        }
+        @case ('reconnecting') {
+          Reconnexion au service de messagerie…
+        }
+        @default {
+          Messagerie temps réel indisponible.
+        }
+      }
+    </p>
+  }
+
+  @if (emojiPickerOpen()) {
+    <app-emoji-picker
+      id="message-emoji-picker"
+      (emojiSelected)="insertEmoji($event)"
+    />
+  }
+
+  <div class="input-row">
+    <label class="visually-hidden" for="message-content">Votre message</label>
+    <button
+      class="emoji-button"
+      type="button"
+      aria-label="Ouvrir le sélecteur d’emojis"
+      aria-controls="message-emoji-picker"
+      [attr.aria-expanded]="emojiPickerOpen()"
+      [disabled]="!chatState.selectedUser()"
+      (pointerdown)="rememberSelection()"
+      (click)="toggleEmojiPicker()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5"></circle>
+        <circle cx="9" cy="10" r="0.8" class="eye"></circle>
+        <circle cx="15" cy="10" r="0.8" class="eye"></circle>
+        <path d="M8.5 14c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8"></path>
+      </svg>
+    </button>
+    <textarea
+      #messageTextarea
+      id="message-content"
+      rows="1"
+      maxlength="2000"
+      placeholder="Écrivez votre message…"
+      [formControl]="contentControl"
+      [disabled]="!chatState.selectedUser()"
+      (click)="rememberSelection()"
+      (input)="rememberSelection()"
+      (keyup)="rememberSelection()"
+      (select)="rememberSelection()"
+      (keydown)="handleKeydown($event)"
+    ></textarea>
+    @if (content().length >= 1800) {
+      <span
+        class="counter"
+        [class.counter--limit]="content().length === 2000"
+        aria-live="polite"
+      >
+        {{ content().length }}/2000
+      </span>
+    }
+    <button
+      class="send-button"
+      type="button"
+      [disabled]="isDisabled()"
+      [attr.aria-label]="chatState.isSending() ? 'Envoi en cours' : 'Envoyer le message'"
+      (click)="send()"
+    >
+      <span aria-hidden="true">{{ chatState.isSending() ? '…' : '↑' }}</span>
+    </button>
+  </div>
+  <p class="hint">Entrée pour envoyer · Maj + Entrée pour une nouvelle ligne</p>
+</div>

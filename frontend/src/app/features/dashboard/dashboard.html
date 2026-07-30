@@ -1,0 +1,35 @@
+<main class="dashboard">
+  <div class="workspace-heading">
+    <div>
+      <p>Messagerie</p>
+      <h1>Technical Chat</h1>
+    </div>
+    <div
+      class="api-state"
+      [class.api-state--up]="apiStatus() === 'up'"
+      [class.api-state--down]="apiStatus() === 'down'"
+    >
+      <span aria-hidden="true"></span>
+      @switch (apiStatus()) {
+        @case ('loading') {
+          <span>Vérification du service…</span>
+        }
+        @case ('up') {
+          <span>Service opérationnel</span>
+        }
+        @case ('down') {
+          <span>Service indisponible</span>
+        }
+      }
+    </div>
+  </div>
+
+  <section
+    class="chat-shell"
+    [class.chat-shell--conversation]="selectedUser()"
+    aria-label="Espace de messagerie"
+  >
+    <app-user-list />
+    <app-conversation />
+  </section>
+</main>

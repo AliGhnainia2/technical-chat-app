@@ -1,0 +1,65 @@
+<aside class="contacts" aria-label="Liste des contacts">
+  <header>
+    <div>
+      <p class="eyebrow">Conversations</p>
+      <h1>Messages</h1>
+    </div>
+    <span class="count" [attr.aria-label]="chatState.users().length + ' contacts'">
+      {{ chatState.users().length }}
+    </span>
+  </header>
+
+  <label class="search">
+    <span class="visually-hidden">Rechercher un contact</span>
+    <span aria-hidden="true">⌕</span>
+    <input
+      type="search"
+      [formControl]="searchControl"
+      placeholder="Rechercher un contact"
+      autocomplete="off"
+    />
+  </label>
+
+  <div class="contact-list">
+    @if (chatState.usersLoading()) {
+      <p class="state-message">Chargement des contacts…</p>
+    } @else if (chatState.usersError(); as error) {
+      <p class="state-message state-message--error">{{ error }}</p>
+    } @else if (filteredUsers().length === 0) {
+      <p class="state-message">
+        {{ searchControl.value ? 'Aucun contact trouvé.' : 'Aucun autre utilisateur.' }}
+      </p>
+    } @else {
+      @for (user of filteredUsers(); track user.id) {
+        <button
+          class="contact"
+          type="button"
+          [class.contact--selected]="chatState.selectedUserId() === user.id"
+          [attr.aria-current]="chatState.selectedUserId() === user.id ? 'true' : null"
+          (click)="selectUser(user.id)"
+        >
+          <span class="avatar" aria-hidden="true">
+            {{ initials(user) }}
+            <span
+              class="presence"
+              [class.presence--online]="user.status === 'ONLINE'"
+            ></span>
+          </span>
+          <span class="contact-copy">
+            <strong>{{ user.username }}</strong>
+            @if (user.status === 'ONLINE') {
+              <small class="online-label">En ligne</small>
+            } @else {
+              <small>
+                Vu {{ user.lastSeenAt | date: 'd MMM, HH:mm' : '' : 'fr' }}
+              </small>
+            }
+          </span>
+          @if (chatState.hasUnread(user.id)) {
+            <span class="unread" aria-label="Nouveau message"></span>
+          }
+        </button>
+      }
+    }
+  </div>
+</aside>

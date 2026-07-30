@@ -1,0 +1,139 @@
+:host {
+  display: block;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+
+.app-shell {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: flex;
+  flex: 0 0 auto;
+  min-height: 4.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem clamp(1.25rem, 4vw, 4rem);
+  border-bottom: 1px solid var(--color-border);
+  background: rgb(248 250 252 / 88%);
+  backdrop-filter: blur(1rem);
+}
+
+.page-content {
+  overflow: hidden;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.brand {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  color: var(--color-ink);
+  font-weight: 780;
+  letter-spacing: -0.025em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  color: white;
+  background: var(--color-primary);
+  box-shadow: 0 0.5rem 1rem rgb(79 70 229 / 20%);
+}
+
+.account,
+.identity {
+  display: flex;
+  align-items: center;
+}
+
+.account {
+  gap: 1rem;
+}
+
+.identity {
+  gap: 0.65rem;
+}
+
+.avatar {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-primary-strong);
+  background: var(--color-primary-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.identity-copy {
+  display: grid;
+  line-height: 1.25;
+}
+
+.identity-copy strong {
+  color: var(--color-ink);
+  font-size: 0.86rem;
+}
+
+.identity-copy small {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+
+.logout-button {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-ink-soft);
+  background: var(--color-surface);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.logout-button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-strong);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 650px) {
+  .topbar {
+    min-height: 4.25rem;
+  }
+
+  .identity-copy,
+  .logout-button span:first-child,
+  .brand > span:last-child {
+    display: none;
+  }
+
+  .account {
+    gap: 0.55rem;
+  }
+}
